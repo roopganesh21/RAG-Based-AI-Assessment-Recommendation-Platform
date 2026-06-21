@@ -43,7 +43,7 @@ gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 print(f"[INFO] Using Gemini Model: {GEMINI_MODEL}")
 
 # ---------------- FASTAPI ----------------
-app = FastAPI(title="SHL Recommendation Engine - by Rup Ganesh")
+app = FastAPI(title="RAG-Based AI Assessment Recommendation Platform - by P Rup Ganesh")
 
 index = None
 products = []

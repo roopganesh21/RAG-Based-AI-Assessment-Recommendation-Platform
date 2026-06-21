@@ -124,6 +124,6 @@ python evaluate.py
 
 ## 👨‍💻 Author
 
-**Rup Ganesh**  
+**P Rup Ganesh**  
 *Computer Science Student*  
 *   **GitHub:** [@roopganesh21](https://github.com/roopganesh21)
