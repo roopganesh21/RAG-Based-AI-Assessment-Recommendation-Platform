@@ -1,0 +1,14 @@
+# Environments
+venv/
+env/
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local Data (Optional, if you want to keep data off GitHub)
+*.xlsx
+*.csv

@@ -1,0 +1,395 @@
+
+================================================================================
+    MY PROJECT STUDY GUIDE - RAG-Based AI Assessment Recommendation Platform
+                              By Rup Ganesh
+================================================================================
+Read this once carefully. That's all you need before your interview.
+================================================================================
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 1: WHAT IS THIS PROJECT? (Your Elevator Pitch)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+"I built an AI-powered recommendation system for SHL's talent assessments.
+A recruiter types a job role — like 'Senior Java Developer' — and my system
+automatically suggests the best assessment tests from SHL's product catalog
+that match that role. It also generates a full hiring strategy using Google's
+Gemini AI."
+
+That's it. That's your one-liner. Memorize it.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 2: THE PROBLEM I WAS SOLVING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SHL has hundreds of assessment tests (Java test, Python test, Leadership test,
+Verbal Reasoning test, etc.). When a recruiter is hiring, they have to manually
+browse through all these and figure out which ones are relevant to the job.
+
+MY SOLUTION: Automate this. Type the job description or role → get the top 10
+most relevant SHL tests instantly. No manual browsing needed.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 3: THE TECH STACK (What I Used & WHY)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. PYTHON — The main programming language. Standard for AI/ML projects.
+
+2. FASTAPI — I built the backend/API using FastAPI.
+   WHY: It's extremely fast, easy to build REST APIs, and auto-generates
+   API documentation. Much faster than Flask for production use.
+
+3. STREAMLIT — I built the frontend (user interface) using Streamlit.
+   WHY: It's designed for data/AI apps. I can build a full interactive
+   web UI with just Python — no HTML/CSS/JavaScript needed.
+
+4. FAISS (Facebook AI Similarity Search) — Used to store and search embeddings.
+   WHY: FAISS can search through thousands of vectors in milliseconds.
+   It's the industry standard for similarity search.
+
+5. Sentence Transformers (all-MiniLM-L6-v2) — Converts text into vectors.
+   WHY: This model is lightweight, fast, and very good at understanding
+   the meaning of sentences, not just keywords.
+
+6. Google Gemini 1.5 Flash — The LLM (Large Language Model) I used.
+   WHY: Gemini is fast, has a large context window, and generates
+   high-quality structured text. The "Flash" version is optimized for speed.
+
+7. Selenium + BeautifulSoup — Used to scrape SHL's product catalog website.
+   WHY: SHL doesn't provide a public API for their catalog, so I scraped
+   it myself to build the dataset.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 4: HOW THE WHOLE SYSTEM WORKS (Step by Step)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Think of it like this — 4 simple steps:
+
+STEP 1: DATA COLLECTION (Done once, offline)
+   → I scraped SHL's website to get all their assessment products.
+   → Each product has: name, URL, description, test type, duration.
+   → Saved everything into a products.json file.
+
+STEP 2: BUILDING THE VECTOR DATABASE (Done once, offline)
+   → I took each assessment's name + description and converted it into
+     a list of numbers called a "vector" or "embedding."
+   → An embedding captures the MEANING of the text, not just words.
+   → Example: "Java Developer test" and "Core Java assessment" will have
+     SIMILAR embeddings because they mean the same thing.
+   → All these vectors are stored in a FAISS index file.
+
+STEP 3: SEARCH / RETRIEVAL (Happens at runtime, every query)
+   → User types: "Senior Data Scientist with Python and SQL"
+   → My system converts that query into a vector too.
+   → FAISS finds the top 10 assessment vectors most SIMILAR to the query vector.
+   → This returns the 10 most relevant assessments.
+
+STEP 4: AI ENHANCEMENT (Optional, for the Strategy mode)
+   → The top 10 results are sent to Gemini AI with a smart prompt.
+   → Gemini reads the assessments and writes a full "hiring strategy" —
+     explaining WHICH tests to use and WHY for this specific role.
+   → This makes the output feel like it came from an expert HR consultant.
+
+This whole pattern (Steps 2+3+4) is called RAG — Retrieval-Augmented Generation.
+RAG = Find relevant info first → then give it to the AI to generate a response.
+It's better than pure AI because the AI is grounded in real, accurate data.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5: EACH FILE AND WHAT IT DOES (Simple Version)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+scrape_shl1.py & scrape_shl2.py
+   → These are the data collection scripts.
+   → They use Selenium to open a real Chrome browser, navigate SHL's website,
+     click through pages, and collect all product links and names.
+   → scrape_shl2.py is an improved version that can resume if it crashes.
+   → Output: products.json
+
+products.json
+   → The raw dataset. Contains all SHL assessments with their details.
+   → Each item has: url, name, description, test_type, duration, etc.
+
+create_vector_db.py
+   → This script reads products.json and creates the FAISS vector database.
+   → It loads the sentence transformer model, encodes all assessments,
+     builds the FAISS index, and saves it.
+   → Output: shl_vector_store.faiss + shl_metadata.pkl
+
+shl_vector_store.faiss
+   → The pre-built vector database. This is what enables fast search.
+   → It's already computed, so the app loads it instantly on startup.
+
+shl_metadata.pkl
+   → A pickle file containing the assessment details (names, URLs, etc.)
+   → It's the lookup table — once FAISS finds the right vector IDs,
+     we use this file to get the actual assessment info.
+
+main.py
+   → The FastAPI backend. The brain of the application.
+   → Has 3 API endpoints:
+       /health   → just checks if the server is running
+       /recommend → returns JSON list of top assessments (strict format)
+       /strategy  → returns AI-generated hiring strategy + raw results
+   → On startup, it loads the FAISS index, metadata, and embedding model.
+   → For each query: embed it → search FAISS → return results.
+
+app.py
+   → The Streamlit frontend. The visual interface.
+   → User types a job role, clicks "Build Strategy."
+   → It calls the /strategy API, gets the response, and displays it
+     in a nice UI with tabs: Strategic Plan | Assessment Catalog | JSON Data.
+   → Has configuration options: Response detail level, number of assessments.
+
+evaluate.py
+   → A testing/validation script.
+   → It reads the provided training dataset (Gen_AI Dataset.xlsx),
+     sends each query to the /recommend API, and checks if the returned
+     assessment URLs match the ground truth URLs.
+   → Calculates Mean Recall@10 score. My score was 15.38%.
+
+generate_submission.py
+   → Generates a submission.csv file for the assignment evaluation.
+   → Reads all test queries, calls the API for each, and saves
+     all recommended URLs in the required CSV format.
+
+Gen_AI Dataset.xlsx
+   → The dataset provided for evaluation. Contains test queries and
+     their correct/expected assessment URLs (ground truth).
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 6: THE KEY FEATURES — EXPLAINED SIMPLY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FEATURE 1: Semantic Search (not just keyword search)
+   → If you type "Python developer," my system understands MEANING.
+   → It will find assessments related to "Core Python," "Django," "scripting"
+     even if those exact words weren't in the query.
+   → This is the power of vector/embedding search over simple text search.
+
+FEATURE 2: Two Modes — Strict and Strategy
+   → /recommend : Just gives you a clean JSON list. Designed for machines
+     (automated evaluation systems) to consume.
+   → /strategy : Calls Gemini AI to generate a full written hiring strategy.
+     Designed for humans (recruiters/HR consultants) to read.
+
+FEATURE 3: Smart Prompt Engineering for Leadership Roles
+   → I wrote a prompt that recognizes when a role implies leadership.
+   → If the query mentions "Manager" or "Lead," Gemini is instructed to
+     ALWAYS include behavioral/personality tests alongside technical ones.
+   → This makes the recommendations more balanced and realistic.
+
+FEATURE 4: Detail Level Control
+   → The Streamlit UI has a slider: Executive Summary / Standard / Deep Dive.
+   → This controls how detailed Gemini's response is.
+   → I pass this as a parameter in the API call and adjust the prompt accordingly.
+
+FEATURE 5: Deduplication
+   → When searching FAISS, sometimes the same assessment can appear multiple
+     times. I added logic to track already-seen URLs and skip duplicates.
+
+FEATURE 6: Gemini Timeout Safety
+   → Gemini API calls can sometimes hang. I wrapped the Gemini call in a
+     separate thread with a 60-second timeout.
+   → If Gemini takes too long, it returns a clean "timed out" message
+     instead of crashing the whole server.
+
+FEATURE 7: Auto Model Detection
+   → On startup, my backend automatically queries Google's API to find
+     which Gemini models are available.
+   → It picks the best one (preferring Gemini 1.5 Flash for speed).
+   → If detection fails, it falls back to a default model name.
+   → This prevents errors if model names change in the future.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 7: THE API ENDPOINTS — WHAT GOES IN, WHAT COMES OUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET /health
+   → Input: nothing
+   → Output: {"status": "healthy"}
+   → Purpose: lets monitoring systems check if the server is alive.
+
+POST /recommend
+   → Input:  {"query": "Java Developer", "top_k": 10}
+   → Output: {"recommended_assessments": [ {url, name, duration, test_type...} ]}
+   → Purpose: strict, machine-readable output for evaluation bots.
+
+POST /strategy
+   → Input:  {"query": "Java Developer", "top_k": 8, "detail_level": "Standard"}
+   → Output: {"ai_response": "...Gemini's strategy text...", "raw_results": [...]}
+   → Purpose: rich, human-readable output for the Streamlit UI.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 8: KEY CONCEPTS TO KNOW (What Interviewers Ask)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Q: What is RAG?
+A: RAG stands for Retrieval-Augmented Generation. Instead of asking an AI to
+   answer from memory (which can be wrong), you first RETRIEVE relevant data
+   from a database, then give that data to the AI to GENERATE a response.
+   My system retrieves from FAISS, then generates using Gemini.
+
+Q: What is a vector / embedding?
+A: It's a way of representing text as numbers. A sentence gets converted into
+   a list of ~384 numbers. Sentences with similar meaning will have similar
+   numbers. This allows mathematical similarity comparison between texts.
+
+Q: What is FAISS?
+A: Facebook AI Similarity Search. It's a library that stores thousands of
+   vectors and can find the most similar ones to a query vector in milliseconds.
+   Think of it as a search engine that understands meaning, not keywords.
+
+Q: Why Gemini instead of GPT?
+A: Gemini 1.5 Flash has a large context window (1 million tokens), is very
+   fast, and free-tier friendly. For this project scale, it was the best fit.
+
+Q: What is Recall@10?
+A: An evaluation metric. For each query, we check if the correct answer appears
+   in the top 10 results. If yes, recall = 1. If no, recall = 0. We average
+   this across all queries. My score was 15.38%.
+
+Q: Why is the Recall@10 score low (15.38%)?
+A: The evaluation used EXACT URL matching — the predicted URL had to match
+   100% exactly with the ground truth URL. In practice, semantically correct
+   assessments were being returned, just not always the exact same URL from
+   the answer key. The system works well in real-world use, but exact matching
+   is a stricter test.
+
+Q: What did you scrape and why?
+A: SHL's product catalog page lists all their assessment tools. They don't
+   provide a public API or dataset. So I built web scrapers using Selenium
+   (to handle JavaScript-rendered pages) and BeautifulSoup (to parse HTML)
+   to collect all product names, URLs, and types.
+
+Q: How did you handle pagination in scraping?
+A: My scraper runs in a loop. After scraping each page, it looks for a "Next"
+   button. If found and not disabled, it clicks it and scrapes the next page.
+   If no Next button is found, the loop ends.
+
+Q: What is Sentence Transformers / all-MiniLM-L6-v2?
+A: A pre-trained model specifically designed to convert sentences into high-
+   quality embeddings. "MiniLM" means it's a small, efficient model. "L6"
+   means 6 transformer layers. It balances speed and quality well.
+
+Q: Why FastAPI over Flask?
+A: FastAPI is asynchronous, auto-generates API docs (Swagger UI at /docs),
+   has built-in data validation using Pydantic, and is significantly faster
+   than Flask under load. Better for production-quality API services.
+
+Q: How does the frontend connect to the backend?
+A: The Streamlit app sends HTTP POST requests to the FastAPI backend using
+   Python's 'requests' library. The backend is running at localhost:8000.
+   The frontend displays whatever JSON the backend returns.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 9: HOW TO RUN THE PROJECT (In case they ask)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Step 1 — Install dependencies:
+   pip install -r requirements.txt
+
+Step 2 — Start the backend:
+   uvicorn main:app --reload
+   (Runs at http://127.0.0.1:8000)
+
+Step 3 — Start the frontend (in a new terminal):
+   streamlit run app.py
+   (Opens in browser automatically)
+
+Step 4 (Optional) — Rebuild the vector database from scratch:
+   python create_vector_db.py
+
+Step 5 (Optional) — Run evaluation:
+   python evaluate.py
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 10: CHALLENGES I FACED (Good to mention in interviews)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Challenge 1: SHL website scraping
+   → SHL's website uses JavaScript to render content.
+   → Simple HTML scrapers wouldn't work.
+   → SOLUTION: Used Selenium (real browser automation) to wait for JS to load,
+     then BeautifulSoup to parse the fully rendered HTML.
+
+Challenge 2: Gemini API timeouts
+   → LLM API calls can hang indefinitely if there's a network issue.
+   → SOLUTION: Wrapped every Gemini call in a Python thread with a 60-second
+     timeout. If it hangs, I catch it and return a clean error message.
+
+Challenge 3: Gemini model name changes
+   → Google occasionally deprecates model names (like "gemini-1.0-pro").
+   → SOLUTION: Built an auto-detection function that queries the API at startup
+     to list available models and picks the best one dynamically.
+
+Challenge 4: Low exact Recall@10 score
+   → The evaluation metric required exact URL matches, which is very strict.
+   → SOLUTION: I analyzed the misses and confirmed semantically the correct
+     assessments were being returned. I documented this limitation clearly.
+     Also bumped top_k to 15 during evaluation to maximize chance of a match.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 11: WHAT I WOULD IMPROVE (Shows you think like an engineer)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Use a better embedding model (e.g. text-embedding-ada-002 or BGE-large)
+   for higher accuracy semantic search.
+
+2. Add URL scraping — if the user pastes a job description URL instead of
+   typing text, scrape that URL and extract the job description automatically.
+   (The architecture already supports this — just needs implementation.)
+
+3. Add a re-ranking step — after FAISS retrieval, use a cross-encoder model
+   to re-rank the top 20 results before returning the top 10.
+
+4. User authentication — add login so different recruiters can save their
+   searches and see history.
+
+5. Deploy to cloud — containerize with Docker (Dockerfile is already written)
+   and deploy to AWS/GCP/HuggingFace Spaces.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 12: QUICK MEMORY SHEET (Read this last, just before interview)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Project    → SHL Assessment Recommendation System
+Type       → RAG-based AI recommendation engine
+Frontend   → Streamlit (app.py)
+Backend    → FastAPI (main.py)
+Search     → FAISS vector search
+Embeddings → all-MiniLM-L6-v2 (Sentence Transformers)
+LLM        → Google Gemini 1.5 Flash
+Data       → Scraped from SHL website using Selenium + BeautifulSoup
+Score      → 15.38% Mean Recall@10
+
+Endpoints:
+  /health    → server status check
+  /recommend → strict JSON output (for machines)
+  /strategy  → AI strategy text + results (for humans)
+
+Flow: User query → embed → FAISS search → top 10 results → Gemini → response
+
+Main files:
+  scrape_shl1/2.py   → collect data from SHL website
+  create_vector_db.py → build the FAISS search index
+  main.py            → FastAPI backend (API server)
+  app.py             → Streamlit frontend (UI)
+  evaluate.py        → test accuracy with Recall@10
+  generate_submission.py → create CSV for assignment
+
+================================================================================
+                         YOU KNOW YOUR PROJECT. GO ACE IT.
+                                   - Rup Ganesh
+================================================================================
