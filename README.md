@@ -92,7 +92,7 @@ streamlit run app.py
 
 ---
 
-## 📊 Evaluation & Metrics
+## Evaluation & Metrics
 
 To keep the project scientifically rigorous, I evaluated the retrieval quality against a labeled training dataset:
 *   **Evaluation Metric:** Mean Recall@10 (Exact URL Match).
