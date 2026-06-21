@@ -2,16 +2,18 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.95%2B-green)
-![Gemini](https://img.shields.io/badge/AI-Gemini%201.5%20Flash-orange)
+![Gemini](https://img.shields.io/badge/AI-Gemini-orange)
 ![Streamlit](https://img.shields.io/badge/Frontend-Streamlit-red)
 
 A GenAI-powered recommendation system that selects the best SHL talent assessments based on job descriptions. Built using **RAG (Retrieval-Augmented Generation)** with **FAISS** vector search and **Google Gemini 1.5 Flash**.
 
 ---
 
-## 🔗 Live Demo
-* **API Endpoint:** `http://127.0.0.1:8000/recommend` *(Deploy your own — see Local Installation below)*
-* **Frontend UI:** Run locally with `streamlit run app.py`
+## 🚀 Quick Start (Running Locally)
+
+To run the platform locally, follow the steps in the [Local Installation](#-local-installation) section below. Once running:
+* **Backend API (Swagger Docs):** Navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) to test the endpoints interactive UI.
+* **Frontend UI:** Open [http://localhost:8501](http://localhost:8501) in your browser.
 
 ---
 
@@ -22,7 +24,7 @@ A GenAI-powered recommendation system that selects the best SHL talent assessmen
 3.  **Retrieval:** User queries (Job Roles or URLs) are converted to vectors to find the top 10 relevant assessments.
 4.  **Synthesis (RAG):**
     * **Strict Mode (`/recommend`):** Returns raw JSON data for automated evaluation systems.
-    * **Strategy Mode (`/strategy`):** Uses **Gemini 1.5 Flash** to generate a "Consultant-Grade" hiring strategy, balancing technical skills with behavioral traits.
+    * **Strategy Mode (`/strategy`):** Uses **Google Gemini** (Gemini 2.0 / 1.5 Flash) to generate a "Consultant-Grade" hiring strategy, balancing technical skills with behavioral traits.
 
 ---
 
