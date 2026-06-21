@@ -12,3 +12,6 @@ __pycache__/
 # Local Data (Optional, if you want to keep data off GitHub)
 *.xlsx
 *.csv
+
+# Study Guide
+MY_PROJECT_STUDY_GUIDE.txt
