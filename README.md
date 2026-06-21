@@ -12,7 +12,7 @@ Built independently as a personal portfolio project to apply and showcase concep
 
 ---
 
-## 💡 Why I Built This (The Problem)
+## Why I Built This (The Problem)
 
 Recruiting teams often struggle to match complex job descriptions with the right pre-employment assessment tests (e.g., programming tests, verbal reasoning, personality matches). Browsing through a catalog of hundreds of tests manually is slow and prone to errors.
 
@@ -20,7 +20,7 @@ Recruiting teams often struggle to match complex job descriptions with the right
 
 ---
 
-## 🛠️ The Tech Stack & Rationale
+## The Tech Stack & Rationale
 
 *   **FastAPI (Backend API):** Chosen over Flask for its native support for asynchronous requests, automated data validation via Pydantic, and automatic Swagger interactive documentation (`/docs`).
 *   **Streamlit (Frontend UI):** Allowed me to build a clean, interactive human-facing dashboard quickly using pure Python, without needing separate HTML/JS frameworks.
@@ -31,7 +31,7 @@ Recruiting teams often struggle to match complex job descriptions with the right
 
 ---
 
-## 📐 Platform Architecture & RAG Pipeline
+## Platform Architecture & RAG Pipeline
 
 ```mermaid
 graph TD
@@ -54,7 +54,7 @@ graph TD
 
 ---
 
-## 🚀 Quick Start (Running Locally)
+## Quick Start (Running Locally)
 
 ### Prerequisites
 *   Python 3.10 or higher installed.
@@ -106,7 +106,7 @@ python evaluate.py
 
 ---
 
-## 🛡️ Key Challenges I Overcame
+## Key Challenges I Overcame
 
 ### 1. Windows Character Encoding Issues
 **Challenge:** Python's default console encoding on Windows (`cp1252`) crashed when print statements contained emojis or special characters used by the ML packages.
@@ -122,7 +122,7 @@ python evaluate.py
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **P Rup Ganesh**  
 *Computer Science Student*  
