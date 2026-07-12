@@ -194,23 +194,6 @@ def perform_search(query, k=10):
 
 
 # ==========================================
-# 0. ROOT / HOMEPAGE
-# ==========================================
-@app.get("/")
-def root():
-    return {
-        "status": "success",
-        "message": "RAG-Based AI Assessment Recommendation API is running",
-        "docs": "/docs",
-        "health": "/health",
-        "endpoints": {
-            "recommend": "POST /recommend",
-            "strategy": "POST /strategy"
-        }
-    }
-
-
-# ==========================================
 # 1. HEALTH CHECK
 # ==========================================
 @app.get("/health")
